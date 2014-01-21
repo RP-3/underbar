@@ -72,9 +72,7 @@ var _ = { };
   _.filter = function(collection, test) {
     var outputArray = [];
     for (var i = 0; i < collection.length; i++) {
-      if (test(collection[i]) === true) {
-        outputArray.push(collection[i]);
-      };
+      if (test(collection[i]) === true) {outputArray.push(collection[i]); };
     }
     return outputArray;
   };

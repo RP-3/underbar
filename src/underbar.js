@@ -90,6 +90,14 @@ var _ = { };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var uniqueArray = [];
+    for (var i=0; i<array.length; i++) {
+      uniqueArray.push(array[i]);
+      for (var j=0; j<(uniqueArray.length-1); j++) {
+        if (array[i] === uniqueArray[j]) {uniqueArray.pop(); };
+      }
+    }
+    return uniqueArray;
   };
 
 

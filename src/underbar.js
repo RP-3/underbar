@@ -79,10 +79,15 @@ var _ = { };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
+
+    var noFlyList = _.filter(collection, test);
     var outputArray = [];
-    for (var i = 0; i < collection.length; i++) {
-      if (test(collection[i]) === false) {outputArray.push(collection[i]); };
-    }
+    _.each(collection, function(a) {
+      if (noFlyList.indexOf(a) < 0) {
+        outputArray.push(a); 
+      }
+    });
+      
     return outputArray;
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it

@@ -178,7 +178,16 @@ var _ = { };
 
     else
       for (var key in collection) {
-      iterator(collection[key], key, collection);
+        console.log(key, target);
+      if (key = target) {
+        console.log(key, target, "true");
+        return true;
+        break;
+      }
+      else {
+        console.log(key, target, "false");
+        return false;
+      }
     };   
   }; 
 

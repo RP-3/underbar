@@ -125,9 +125,6 @@ var _ = { };
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
   _.pluck = function(array, propertyName) {
-    // TIP: map is really handy when you want to transform an array of
-    // values into a new array of values. _.pluck() is solved for you
-    // as an example of this.
     return _.map(array, function(value){
       return value[propertyName];
     });
@@ -156,7 +153,6 @@ var _ = { };
     else var output = 0;
     for (var i=0; i<collection.length; i++) {
       output = iterator(output, collection[i]);
-      console.log(output);
     }
     return output;
   };
@@ -203,8 +199,11 @@ var _ = { };
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-    // var output = 0;
-    // return _.reduce(collection, function(output, collection[i]){}, accumulator)
+
+    var output = 1;
+    var iterator = function(e1, e2) { return e1 * e2 };
+    if ( _.reduce(collection, iterator(output, collection), 1) ) return true;
+    else return false;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is

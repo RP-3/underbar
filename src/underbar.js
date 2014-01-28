@@ -152,7 +152,8 @@ var _ = { };
     if (accumulator) var output = accumulator;
     else var output = 0;
     for (var i=0; i<collection.length; i++) {
-      output = iterator(output, collection[i]);
+      output = iterator(collection[i], output);
+      console.log(output);
     }
     return output;
   };
@@ -200,10 +201,14 @@ var _ = { };
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
 
-    var output = 1;
-    var iterator = function(e1, e2) { return e1 * e2 };
-    if ( _.reduce(collection, iterator(output, collection), 1) ) return true;
-    else return false;
+    var truthTest = function(elementToTest, previousElement) {
+      switch(elementToTest){
+        case "true": case true: case "yes": case 1: case "1": return true * previousElement;
+        case "false": case false: case "no": case 0: case "0": return false * previousElement;
+      }
+    }
+
+    return ( _.reduce(collection, truthTest, 1) == 1)
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is

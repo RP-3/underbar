@@ -149,13 +149,15 @@ var _ = { };
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
-    if (accumulator) var output = accumulator;
-    else var output = 0;
+    if (accumulator) {console.log("accumulator exists");}
+    else {var accumulator = 0;}
+    var output = [];
     for (var i=0; i<collection.length; i++) {
-      output = iterator(collection[i], output);
+      accumulator = iterator(accumulator, collection[i]);
+      output.push(accumulator);
       console.log(output);
     }
-    return output;
+    return accumulator;
   };
 
 
@@ -201,9 +203,9 @@ var _ = { };
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
 
-    var truthTest = function(elementToTest, previousElement) {
+    var truthTest = function(previousElement, elementToTest) {
       switch(elementToTest){
-        case "true": case true: case "yes": case 1: case "1": return true * previousElement;
+        case "true": case true: case "yes": case 1: case "1": case undefined: return true * previousElement;
         case "false": case false: case "no": case 0: case "0": return false * previousElement;
       }
     }

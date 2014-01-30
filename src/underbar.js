@@ -155,7 +155,7 @@ var _ = { };
     for (var i=0; i<collection.length; i++) {
       accumulator = iterator(accumulator, collection[i]);
       output.push(accumulator);
-      console.log(output);
+      //console.log(output);
     }
     return accumulator;
   };
@@ -238,7 +238,16 @@ var _ = { };
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj) {
+  _.extend = function(originalObj, extension) {
+    for (var i=0; i<arguments.length; i++) {
+      for (key in extension) {
+        originalObj[key] = extension[key];  
+        console.log(key, extension[key]);
+      }
+    }
+    console.log(originalObj);
+    return originalObj;
+
   };
 
   // Like extend, but doesn't ever overwrite a key that already

@@ -238,15 +238,15 @@ var _ = { };
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(originalObj, extension) {
-    for (var i=0; i<arguments.length; i++) {
-      for (key in extension) {
-        originalObj[key] = extension[key];  
-        console.log(key, extension[key]);
+  _.extend = function() {
+    for (var i=1; i<arguments.length; i++) {
+      for (key in arguments[i]) {
+        arguments[0][key] = arguments[i][key];  
+        console.log(key, arguments[i][key]);
       }
     }
-    console.log(originalObj);
-    return originalObj;
+    console.log(arguments[0]);
+    return arguments[0];
 
   };
 

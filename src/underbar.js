@@ -242,10 +242,8 @@ var _ = { };
     for (var i=1; i<arguments.length; i++) {
       for (key in arguments[i]) {
         arguments[0][key] = arguments[i][key];  
-        console.log(key, arguments[i][key]);
       }
     }
-    console.log(arguments[0]);
     return arguments[0];
 
   };
@@ -253,6 +251,14 @@ var _ = { };
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+   for (var i=1; i<arguments.length; i++) {
+      for (key in arguments[i]) {
+        if (!arguments[0].hasOwnProperty(key))
+        arguments[0][key] = arguments[i][key];  
+      }
+    }
+    return arguments[0];
+
   };
 
 
@@ -294,6 +300,13 @@ var _ = { };
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var memoizeHistory = {};
+
+    if (!memoizeHistory[func]) {
+      memoizeHistory[func] = func.apply(this, arguments);
+      return memoizeHistory[func];}
+    else {
+      return memoizeHistory[func];}
   };
 
   // Delays a function for the given number of milliseconds, and then calls

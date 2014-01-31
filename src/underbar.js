@@ -149,8 +149,7 @@ var _ = { };
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
-    if (accumulator) {console.log("accumulator exists");}
-    else {var accumulator = 0;}
+    if (!accumulator) {var accumulator = 0;}
     var output = [];
     for (var i=0; i<collection.length; i++) {
       accumulator = iterator(accumulator, collection[i]);
@@ -300,13 +299,19 @@ var _ = { };
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    var memoizeHistory = {};
 
-    if (!memoizeHistory[func]) {
-      memoizeHistory[func] = func.apply(this, arguments);
-      return memoizeHistory[func];}
-    else {
-      return memoizeHistory[func];}
+    var memoizeHistory = {};
+    
+    return function() {
+      var funcArgument = Array.prototype.slice.call(arguments);
+      console.log(funcArgument);
+      if (funcArgument in memoizeHistory) {
+        return memoizeHistory[funcArgument];
+      } else {
+        memoizeHistory[funcArgument] = func(funcArgument);
+        return memoizeHistory[funcArgument];
+      }
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls

@@ -107,12 +107,20 @@ var _ = { };
 
 
   // Return the results of applying an iterator to each element.
-  _.map = function(array, iterator) {
-    var results = [];
-    for (var i=0; i<array.length; i++) {
-      results.push(iterator(array[i]));
-    }
-    return results;
+  // _.map = function(array, iterator) {
+  //   var results = [];
+  //   for (var i=0; i<array.length; i++) {
+  //     results.push(iterator(array[i]));
+  //   }
+  //   return results;
+  // };
+
+  _.map = function(input, mapIterator) {
+   var output = (Array.isArray(input)) ? [] : {};
+   _.each(input, function(currentElement, index, collection){
+    output[index] = (mapIterator(currentElement, index, collection));
+   });
+   return output;
   };
 
   /*
@@ -132,7 +140,25 @@ var _ = { };
 
   // Calls the method named by methodName on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
-  _.invoke = function(collection, functionOrKey, args) {
+  _.invoke = function(collection, methodName, args) {
+    // var output = []
+    // if (typeof functionOrKey == "function"){
+    //   for (var i=0; i<collection.length; i++) {
+    //    output[i] = functionOrKey.apply(collection[i]);      
+    //   }
+    // }
+    // else{
+    //   for(i=0; i<collection.length; i++){
+    //     output[i] = String.prototype.toUpperCase.apply(collection[i]);
+    //   }
+    // }
+    // console.log(output);
+    // return output;
+
+   var invokeFunc = function(currentElement, index, collection) { //reunite with function-taking parent
+    return currentElement[methodName].apply(currentElement, args);
+   };
+   return _.map(collection, invokeFunc);
   };
 
   // Reduces an array or object to a single value by repetitively calling
@@ -150,17 +176,12 @@ var _ = { };
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
     if (!accumulator) {var accumulator = 0;}
-    var output = [];
     for (var i=0; i<collection.length; i++) {
       accumulator = iterator(accumulator, collection[i]);
-      output.push(accumulator);
-      //console.log(output);
+      console.log(accumulator); 
     }
     return accumulator;
   };
-
-
-
 
 
   // Determine if the array or object contains a given value (using `===`).
@@ -201,16 +222,12 @@ var _ = { };
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-
     var truthTest = function(previousElement, elementToTest) {
-      switch(elementToTest){
-        case "true": case true: case "yes": case 1: case "1": case undefined: return true * previousElement;
-        case "false": case false: case "no": case 0: case "0": return false * previousElement;
-      }
-    }
-
-    return ( _.reduce(collection, truthTest, 1) == 1)
+        return (iterator) ? iterator(elementToTest) && iterator(previousElement): elementToTest && previousElement;
+        } // Add Mo f**ing loop!
+    return _.reduce(collection, truthTest, true) ==true;
   };
+  
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
@@ -239,7 +256,7 @@ var _ = { };
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function() {
     for (var i=1; i<arguments.length; i++) {
-      for (key in arguments[i]) {
+      for (var key in arguments[i]) {
         arguments[0][key] = arguments[i][key];  
       }
     }
@@ -251,7 +268,7 @@ var _ = { };
   // exists in obj
   _.defaults = function(obj) {
    for (var i=1; i<arguments.length; i++) {
-      for (key in arguments[i]) {
+      for (var key in arguments[i]) {
         if (!arguments[0].hasOwnProperty(key))
         arguments[0][key] = arguments[i][key];  
       }
@@ -321,6 +338,10 @@ var _ = { };
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var funcArguments = Array.prototype.slice.call(arguments); //returns all arguments
+    var toPass = funcArguments.slice(2); //returns all arguments but first two
+    console.log(toPass);
+    setTimeout(function(){func.apply(null, toPass);}, wait, toPass);
   };
 
 
@@ -335,6 +356,14 @@ var _ = { };
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var duplicateArray = Array.prototype.slice.call(array);
+    var output = [];
+    for (var i=0; i<duplicateArray.length; i++) {
+       var currentIndex = Math.round(Math.random() * duplicateArray.length);
+       output.push(duplicateArray[currentIndex]);
+       duplicateArray.pop();
+    }
+    return output;
   };
 
 

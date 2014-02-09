@@ -141,24 +141,18 @@ var _ = { };
   // Calls the method named by methodName on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
   _.invoke = function(collection, methodName, args) {
-    // var output = []
-    // if (typeof functionOrKey == "function"){
-    //   for (var i=0; i<collection.length; i++) {
-    //    output[i] = functionOrKey.apply(collection[i]);      
-    //   }
-    // }
-    // else{
-    //   for(i=0; i<collection.length; i++){
-    //     output[i] = String.prototype.toUpperCase.apply(collection[i]);
-    //   }
-    // }
-    // console.log(output);
-    // return output;
-
-   var invokeFunc = function(currentElement, index, collection) { //reunite with function-taking parent
-    return currentElement[methodName].apply(currentElement, args);
-   };
+   if (typeof methodName === "function")  {
+    var callMethod = function(currentElement, index, collection) {
+      return methodName.apply(currentElement, args);
+    }
+    return _.map(collection, callMethod)
+   }
+   else {
+    var invokeFunc = function(currentElement, index, collection) { 
+     return currentElement[methodName].apply(currentElement, args);
+    };
    return _.map(collection, invokeFunc);
+   }
   };
 
   // Reduces an array or object to a single value by repetitively calling
@@ -223,8 +217,8 @@ var _ = { };
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
     var truthTest = function(previousElement, elementToTest) {
-        return (iterator) ? iterator(elementToTest) && iterator(previousElement): elementToTest && previousElement;
-        } // Add Mo f**ing loop!
+      return (iterator) ? iterator(elementToTest) && iterator(previousElement): elementToTest && previousElement;
+    } 
     return _.reduce(collection, truthTest, true) ==true;
   };
   

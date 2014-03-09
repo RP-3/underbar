@@ -69,28 +69,44 @@ var _ = { };
   };
 
   // Return all elements of an array that pass a truth test.
-  _.filter = function(collection, test) {
-    var outputArray = [];
-    for (var i = 0; i < collection.length; i++) {
-      if (test(collection[i]) === true) {outputArray.push(collection[i]); };
-    }
-    return outputArray;
+  // _.filter = function(collection, test) {
+  //   var outputArray = [];
+  //   for (var i = 0; i < collection.length; i++) {
+  //     if (test(collection[i]) === true) {outputArray.push(collection[i]); };
+  //   }
+  //   return outputArray;
+  // };
+
+  _.filter = function(collection, test){ //updated following check-in1. 
+    var output = [];
+    _.each(collection, function(value, key, collection){
+      if (test(value) === true){
+        output.push(value);
+      }
+    });
+    return output;
   };
 
   // Return all elements of an array that don't pass a truth test.
-  _.reject = function(collection, test) {
+  // _.reject = function(collection, test) {
 
-    var noFlyList = _.filter(collection, test);
-    var outputArray = [];
-    _.each(collection, function(a) {
-      if (noFlyList.indexOf(a) < 0) {
-        outputArray.push(a); 
-      }
-    });
+  //   var noFlyList = _.filter(collection, test);
+  //   var outputArray = [];
+  //   _.each(collection, function(a) {
+  //     if (noFlyList.indexOf(a) < 0) {
+  //       outputArray.push(a); 
+  //     }
+  //   });
       
-    return outputArray;
-    // TIP: see if you can re-use _.filter() here, without simply
-    // copying code in and modifying it
+  //   return outputArray;
+  //   // TIP: see if you can re-use _.filter() here, without simply
+  //   // copying code in and modifying it
+  // };
+
+  _.reject = function(collection, test){ //updated following checkin1
+    return _.filter(collection, function(test){
+      return !test(value);
+    })
   };
 
   // Produce a duplicate-free version of the array.
@@ -104,6 +120,16 @@ var _ = { };
     }
     return uniqueArray;
   };
+
+  // _.uniq = function(array){ checkin1 instructor version. revise!
+  //   // breadcrumbing
+  //   var uniqueObj = {};
+  //   _.each(array, function(value, key, collection){
+  //     uniqueObj[value] = true;
+  //   });
+    
+  //   return Object.keys(uniqueObj);
+  // }
 
 
   // Return the results of applying an iterator to each element.
@@ -172,7 +198,6 @@ var _ = { };
     if (!accumulator) {var accumulator = 0;}
     for (var i=0; i<collection.length; i++) {
       accumulator = iterator(accumulator, collection[i]);
-      console.log(accumulator); 
     }
     return accumulator;
   };
@@ -216,17 +241,33 @@ var _ = { };
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-    var truthTest = function(previousElement, elementToTest) {
-      return (iterator) ? iterator(elementToTest) && iterator(previousElement): elementToTest && previousElement;
-    } 
-    return _.reduce(collection, truthTest, true) ==true;
+  if (!iterator) {
+    var iterator = _.identity;
+  }
+  return _.reduce(collection, function(accumulator, element){
+     return (!!iterator(element) && accumulator);
+  }, true);
   };
-  
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
+    // if (!iterator) {
+    //   var iterator = _.identity;
+    // }
+    // // TIP: There's a very clever way to re-use every() here.
+    // if (collection.length === 0) {return false}; //Won't work for objects :(
+    // var reverseIterator = function(accumulator, element){
+    //   if (!!iterator(element)){ return false;}
+    //   return !(accumulator || !!iterator(element));
+    // };
+    // return (!(_.every(collection, reverseIterator)) || _.every(collection, iterator));
+    if (!iterator) {var iterator = _.identity;};
+    if (collection.length === 0) {return false};
+
+    for (var i=0; i<collection.length; i++){
+     if (!!iterator(collection[i]) === true) {return true};
+    };
   };
 
 
@@ -315,7 +356,6 @@ var _ = { };
     
     return function() {
       var funcArgument = Array.prototype.slice.call(arguments);
-      console.log(funcArgument);
       if (funcArgument in memoizeHistory) {
         return memoizeHistory[funcArgument];
       } else {
@@ -334,7 +374,6 @@ var _ = { };
   _.delay = function(func, wait) {
     var funcArguments = Array.prototype.slice.call(arguments); //returns all arguments
     var toPass = funcArguments.slice(2); //returns all arguments but first two
-    console.log(toPass);
     setTimeout(function(){func.apply(null, toPass);}, wait, toPass);
   };
 

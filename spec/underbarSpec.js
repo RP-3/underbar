@@ -250,8 +250,9 @@ describe('every', function() {
   });
 
   it('handles callbacks that do work on the input', function() {
-    var isEven = function(num) { return num % 2 === 0; };
-
+    var isEven = function(num) { 
+      console.log("isEven fired");
+      return num % 2 === 0; };
     expect(_.every([0, 10, 28], isEven)).to.equal(true);
     expect(_.every([0, 11, 28], isEven)).to.equal(false);
   });

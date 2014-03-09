@@ -243,37 +243,21 @@ var _ = { };
     // TIP: Try re-using reduce() here.
   if (!iterator) {var iterator = _.identity;}
   return _.reduce(collection, function(accumulator, element){
-     return (!!iterator(element) && accumulator);
+     return (!!iterator(element) && !!accumulator);
   }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  // _.some = function(collection, iterator) {
-  //   // if (!iterator) {
-  //   //   var iterator = _.identity;
-  //   // }
-  //   // // TIP: There's a very clever way to re-use every() here.
-  //   // if (collection.length === 0) {return false}; //Won't work for objects :(
-  //   // var reverseIterator = function(accumulator, element){
-  //   //   if (!!iterator(element)){ return false;}
-  //   //   return !(accumulator || !!iterator(element));
-  //   // };
-  //   // return (!(_.every(collection, reverseIterator)) || _.every(collection, iterator));
-  //   if (!iterator) {var iterator = _.identity;};
-  //   if (collection.length === 0) {return false};
-
-  //   for (var i=0; i<collection.length; i++){
-  //    if (!!iterator(collection[i]) === true) {return true};
-  //   };
-  // };
-
+  // TIP: There's a very clever way to re-use every() here.
+ 
   _.some = function(collection, iterator){
-    var allFalse = _.every(collection, function(iterator){
-      return !iterator; 
-    }); //modify every to test if every element is false
+    if (!iterator) {var iterator = _.identity;}
+    var allFalse = _.every(collection, function(value){
+      return !iterator(value); 
+    }); //modify _.every to test if every element is false
     return !allFalse;  //If it is NOT the case that every element is false, some must be true :)
-  }; //But this still seems to pass a set containing to matching values. Hard to figure out why...
+  }; 
 
 
 

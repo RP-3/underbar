@@ -104,7 +104,7 @@ var _ = { };
   // };
 
   _.reject = function(collection, test){ //updated following checkin1
-    return _.filter(collection, function(test){
+    return _.filter(collection, function(value){
       return !test(value);
     })
   };
@@ -241,9 +241,7 @@ var _ = { };
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-  if (!iterator) {
-    var iterator = _.identity;
-  }
+  if (!iterator) {var iterator = _.identity;}
   return _.reduce(collection, function(accumulator, element){
      return (!!iterator(element) && accumulator);
   }, true);
@@ -251,24 +249,32 @@ var _ = { };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
-    // if (!iterator) {
-    //   var iterator = _.identity;
-    // }
-    // // TIP: There's a very clever way to re-use every() here.
-    // if (collection.length === 0) {return false}; //Won't work for objects :(
-    // var reverseIterator = function(accumulator, element){
-    //   if (!!iterator(element)){ return false;}
-    //   return !(accumulator || !!iterator(element));
-    // };
-    // return (!(_.every(collection, reverseIterator)) || _.every(collection, iterator));
-    if (!iterator) {var iterator = _.identity;};
-    if (collection.length === 0) {return false};
+  // _.some = function(collection, iterator) {
+  //   // if (!iterator) {
+  //   //   var iterator = _.identity;
+  //   // }
+  //   // // TIP: There's a very clever way to re-use every() here.
+  //   // if (collection.length === 0) {return false}; //Won't work for objects :(
+  //   // var reverseIterator = function(accumulator, element){
+  //   //   if (!!iterator(element)){ return false;}
+  //   //   return !(accumulator || !!iterator(element));
+  //   // };
+  //   // return (!(_.every(collection, reverseIterator)) || _.every(collection, iterator));
+  //   if (!iterator) {var iterator = _.identity;};
+  //   if (collection.length === 0) {return false};
 
-    for (var i=0; i<collection.length; i++){
-     if (!!iterator(collection[i]) === true) {return true};
-    };
-  };
+  //   for (var i=0; i<collection.length; i++){
+  //    if (!!iterator(collection[i]) === true) {return true};
+  //   };
+  // };
+
+  _.some = function(collection, iterator){
+    var allFalse = _.every(collection, function(iterator){
+      return !iterator; 
+    }); //modify every to test if every element is false
+    return !allFalse;  //If it is NOT the case that every element is false, some must be true :)
+  }; //But this still seems to pass a set containing to matching values. Hard to figure out why...
+
 
 
   /**

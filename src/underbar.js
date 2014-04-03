@@ -440,6 +440,21 @@ var _ = { };
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    var output = [];
+
+    //recursive array-checker function
+    var checkChildren = function(el){
+      if (Array.isArray(el) === true){
+        for (var i=0; i<el.length; i++){
+          checkChildren(el[i]);
+        }
+      }else{
+        output.push(el);
+      }
+    }
+
+    checkChildren(nestedArray);
+    return output;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains

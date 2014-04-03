@@ -401,38 +401,15 @@ var _ = { };
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
-
-    //iterate collection and return array of arrays, each with its value and index
-    var iterate = function(array, iteratingFunction){
-      var results = [];
-      _.each(array, function(array, iteratingFunction){
-        var elementValue = iteratingFunction(array[i]);
-        var elementIndex = results.length;
-        results.push([elementValue, elementIndex])
-        }
-      );
-      return results;
-    };
-
-    var iterations = iterate(collection, iterator);
-
-    if(typeof iterations[0] === "string"){
-      //sort iterations alphabetically
+    if(typeof iterator === "string"){
+      return collection.sort(function(a, b){
+        return a[iterator] > b[iterator] ? 1 : -1;
+      });
+    } else{
+      return collection.sort(function(a, b){
+        return iterator(a) - iterator(b);
+      });
     }
-    else{
-      //sort iterations by value
-    }
-
-    //in the sorted iterations array of arrays...
-    //use the second element (original index) in each mini array...
-    //to match to the original collection...
-    //and find the original untransformed item...
-    //add that item as a third element in the array...
-    //return an array containing ONLY the third element in each inner array
-
-
-
-
   };
 
 

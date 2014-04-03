@@ -402,12 +402,39 @@ var _ = { };
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
 
-    //iterate collection and return results as array
+    //iterate collection and return array of arrays, each with its value and index
     var iterate = function(array, iteratingFunction){
       var results = [];
-      for (var i=0; i<collection.length; i++)
+      _.each(array, function(array, iteratingFunction){
+        var elementValue = iteratingFunction(array[i]);
+        var elementIndex = results.length;
+        results.push([elementValue, elementIndex])
+        }
+      );
+      return results;
     };
+
+    var iterations = iterate(collection, iterator);
+
+    if(typeof iterations[0] === "string"){
+      //sort iterations alphabetically
+    }
+    else{
+      //sort iterations by value
+    }
+
+    //in the sorted iterations array of arrays...
+    //use the second element (original index) in each mini array...
+    //to match to the original collection...
+    //and find the original untransformed item...
+    //add that item as a third element in the array...
+    //return an array containing ONLY the third element in each inner array
+
+
+
+
   };
+
 
   // Zip together two or more arrays with elements of the same index
   // going together.

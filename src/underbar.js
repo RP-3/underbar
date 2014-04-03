@@ -460,6 +460,27 @@ var _ = { };
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+    var result = [];
+    var allElements;
+
+    //get a complete set of elements
+    for (var i=0; i<arguments.length; i++){
+      allElements.push(arguments[i].slice());
+    }
+
+    allElements = _.uniq(allElements); //delete duplicates
+    console.log(allElements);
+
+    for (var i=0; i<allElements.length; i++){ //for each of those elements...
+      for (var j=0; j<arguments.length; j++){ //in each of the arguments
+        if (arguments[j].indexOf(allElements[i]) > -1){
+          result.push(allElements[i]);
+        }
+      }
+    }
+
+
+    return result;
   };
 
   // Take the difference between one array and a number of other arrays.

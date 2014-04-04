@@ -469,8 +469,6 @@ var _ = { };
 
     allElements = _.flatten(allElements);
     allElements = _.uniq(allElements); //delete duplicates
-    console.log(allElements);
-    console.log(arguments);
 
     for (var i=0; i<allElements.length; i++){ //for each of those elements...
       var currentElement = allElements[i];
@@ -490,6 +488,23 @@ var _ = { };
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var result = [];
+    var firstArray = _.uniq(array);
+    //get a complete set of elements
+
+    for (var i=0; i<firstArray.length; i++){ //for each of those elements...
+      var currentElement = firstArray[i];
+      var present = false;
+      for (var j=1; j<arguments.length; j++){ //in each of the arguments
+        if (arguments[j].indexOf(currentElement) > -1){
+          present = true;
+        }
+      }
+      if(present === false){
+        result.push(currentElement);
+      }
+    }
+    return result;
   };
 
 

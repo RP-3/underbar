@@ -461,25 +461,29 @@ var _ = { };
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
     var result = [];
-    var allElements;
-
+    var allElements = [];
     //get a complete set of elements
     for (var i=0; i<arguments.length; i++){
       allElements.push(arguments[i].slice());
     }
 
+    allElements = _.flatten(allElements);
     allElements = _.uniq(allElements); //delete duplicates
     console.log(allElements);
+    console.log(arguments);
 
     for (var i=0; i<allElements.length; i++){ //for each of those elements...
+      var currentElement = allElements[i];
+      var present = true;
       for (var j=0; j<arguments.length; j++){ //in each of the arguments
-        if (arguments[j].indexOf(allElements[i]) > -1){
-          result.push(allElements[i]);
+        if (arguments[j].indexOf(currentElement) < 0){
+          present = false;
         }
       }
+      if(present === true){
+        result.push(currentElement);
+      }
     }
-
-
     return result;
   };
 
